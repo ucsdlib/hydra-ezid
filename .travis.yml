@@ -1,0 +1,17 @@
+language: ruby
+rvm:
+  - 2.0.0
+gemfile:
+  - gemfiles/rails3.gemfile
+  - gemfiles/rails4.gemfile
+notifications:
+  email:
+    recipients:
+      - "michael@psu.edu"
+    on_success: "change"
+    on_failure: "always"
+  irc:
+    channels:
+      - "irc.freenode.org#hycascadia"
+    template:
+      - "%{repository}//%{branch}@%{commit} by %{author}: %{message} - %{build_url}"
