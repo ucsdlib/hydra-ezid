@@ -7,41 +7,44 @@ A Rails engine providing EZID services for Hydra applications
 Add this line to your application's Gemfile:
 
     gem 'hydra-ezid'
-	
-	And then execute:
-	
-	    $ bundle
-		
-		Or install it yourself as:
-		
-		    $ gem install hydra-ezid
-			
-			## Usage
-			
-			### Mount the engine to get the routes in config/routes.rb
-			
-			    mount Hydra::Ezid::Engine => '/'
-				
-				### Call button_to_mint_ezid view helper in your search result page template.
-  First add `helper :ezid` to your `catalog_controller.rb`
-    
-	  Next, we recommend putting the view helper in catalog/[_sort_and_per_page.html.erb](https://github.com/projectblacklight/blacklight/blob/master/app/views/catalog/_sort_and_per_page.html.erb) which you will manually override in you app.
+
+And then execute:
+
+    $ bundle
+
+Or install it yourself as:
+
+    $ gem install hydra-ezid
+
+## Usage
+
+### Mount the engine to get the routes in config/routes.rb
+
+    mount Hydra::Ezid::Engine => '/'
+
+### Call button_to_mint_ezid view helper in your search result page template.
+
+First add `helper :ezid` to your `catalog_controller.rb`
+
+Next, we recommend putting the view helper in catalog/[_sort_and_per_page.html.erb](https://github.com/projectblacklight/blacklight/blob/master/app/views/catalog/_sort_and_per_page.html.erb) which you will manually override in your app:
 ```erb
 <%= button_to_mint_ezid %>
-```    
+```
 
 ### Any time you want to refer to the routes from hydra-ezid use ezid.
-    ezid.new_ezid_path
-	
-	### Make your Models Ezid-able
-	
-	Add `include Hydra::Ezid::ModelMethods` to the models for anything that you want to be able to mint EZIDs for.
+
+ezid.new_ezid_path
+
+### Make your Models Ezid-able
+
+Add `include Hydra::Ezid::ModelMethods` to the models for anything that you want to be able to mint EZIDs for.
 
 Example:
 ```ruby
 class GenericFile < ActiveFedora::Base
   include Hydra::Ezid::ModelMethods
     ...
+```
 
 ### Setup instructions for Contributors
 
@@ -49,17 +52,17 @@ In order to make modifications to the gem code and run the tests, clone the repo
 
 ```
     $ bundle install
-	    $ git submodule init
-		    $ git submodule update
-			    $ rake jetty:config
-				    $ rake jetty:start
-					    $ rake clean
-						    $ rake spec
-							```
-							
-							## License
-							
-							The hydra-collections source code is freely available under the Apache 2.0 license.
+    $ git submodule init
+    $ git submodule update
+    $ rake jetty:config
+    $ rake jetty:start
+    $ rake clean
+    $ rake spec
+```
+
+## License
+
+The hydra-ezid source code is freely available under the Apache 2.0 license.
 [Read the copyright statement and license](/LICENSE.txt).
 
 ## Acknowledgements
