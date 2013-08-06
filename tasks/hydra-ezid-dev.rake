@@ -51,8 +51,9 @@ gem 'factory_girl_rails'
         puts `rake db:migrate db:test:prepare`
       end
     end
-  end
   puts "Done generating test app"
+  end
+  puts "Test app already generated"
 end
 
 desc "Clean out the test rails app"
