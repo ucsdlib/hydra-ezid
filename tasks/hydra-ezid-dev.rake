@@ -34,7 +34,7 @@ task :generate do
     `rails new spec/internal`
     puts "Updating gemfile"
 
-    `echo "gem 'hydra-ezid', :path=>'../../../ezid'
+    `echo "gem 'hydra-ezid', :path=>'../../../hydra-ezid'
 gem 'factory_girl_rails'
     " >> spec/internal/Gemfile`
     puts "Copying generator"

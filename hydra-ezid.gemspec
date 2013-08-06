@@ -18,6 +18,7 @@ Gem::Specification.new do |s|
   s.test_files    = s.files.grep(%r{^(test|spec|features)/})
   s.require_paths = ['lib']
 
+  s.add_dependency 'blacklight'
   s.add_dependency 'hydra-head'
   s.add_dependency 'ezid'
 
