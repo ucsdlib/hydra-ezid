@@ -12,13 +12,14 @@ describe Hydra::Ezid do
   subject { FedoraModel.new }
   it { should respond_to(:ezid) }
   it "mints an ezid"
-  it "stores an ezid in a configurable location"
+  it "raises an error when minting against an unsaved object"
+  it "uses a configurator for account details"
+  it "stores an id in a configurable location by schema"
+  it "disallows repeat settings of a schema"
   it "disallows setting of the ezid manually"
+  it "updates/saves when when changed"
   it "crosswalks metadata"
   it "sends crosswalked metadata to the ezid service"
-  it "updates metadata when changed"
-  it "supports an overrideable queue"
-  it "retrieves the ezid"
   it "allows specification of DOI or ARK"
   it "allows multiple accounts"
   it "allows management of status (public, private, etc.)"
