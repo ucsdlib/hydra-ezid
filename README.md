@@ -43,7 +43,10 @@ Example:
 ```ruby
 class GenericFile < ActiveFedora::Base
   include Hydra::Ezid::ModelMethods
-  # TODO: yeah, figure this out
+  ezid_config do
+    doi(:descMetadata, in: :my_doi)
+    ark(:properties, in: :some_ark)
+  end
 ```
 
 ## Developers

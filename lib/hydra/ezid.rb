@@ -8,5 +8,8 @@ module Hydra
     class Engine < ::Rails::Engine
       engine_name 'ezid'
     end
+    def self.configurator
+      CONSTANTINOPLE.ezid
+    end
   end
 end

@@ -4,6 +4,18 @@ describe Hydra::Ezid do
   before(:all) do
     class FedoraModel < ActiveFedora::Base
       include Hydra::Ezid::ModelMethods
+      has_metadata :name => 'properties', :type => ActiveFedora::SimpleDatastream do |m|
+        m.field 'some_ark',  :string
+      end
+      has_metadata :name => 'descMetadata', :type => ActiveFedora::SimpleDatastream do |m|
+        m.field 'doi',  :string
+      end
+      delegate_to :properties, [:some_ark], unique: true
+      delegate_to :descMetadata, [:doi], unique: true
+      ezid_config do
+        doi(at: :descMetadata)
+        ark(at: :properties, in: :some_ark)
+      end
     end
   end
 
@@ -13,15 +25,16 @@ describe Hydra::Ezid do
 
   subject(:item) { FedoraModel.new }
 
-  it { should respond_to(:mint_ezid) }
-
-  describe "#mint_ezid" do
+  describe "#mint_ezid!" do
     before(:each) do
       item.stub(:persisted? => true)
+      item.stub(:pid => 'sufia:xz67gt83a')
     end
 
+    it { should respond_to(:mint_ezid!) }
+
     it "mints a valid ezid" do
-      item.mint_ezid.should be_a(String)
+      item.mint_ezid!.should be_nil
     end
 
     it "uses a configurator for account details" do
@@ -31,16 +44,18 @@ describe Hydra::Ezid do
     it "calls Ezid.generate_ezid" do
       pending "*** WE NEED TO IMPLEMENT THIS ***"
       Ezid::ApiSession.any_instance.should_receive(:generate_ezid).once
-      item.mint_ezid
+      item.mint_ezid!
     end
 
     it "raises an error when minting against an unsaved object" do
       item.stub(:persisted? => false)
-      expect { item.mint_ezid }.to raise_error(Hydra::Ezid::MintError)
+      expect { item.mint_ezid! }.to raise_error(Hydra::Ezid::MintError)
     end
-
     it "stores an id in a configurable location by schema" do
-      pending "Need to implement ezid_at first"
+      item.stub(:persisted? => true)
+      item.mint_ezid!
+      item.some_ark.should == "ark:/98765/sldr2sufia:xz67gt83a"
+      item.doi.should == "doi:/10.1000/sldr1sufia:xz67gt83a"
     end
   end
 
