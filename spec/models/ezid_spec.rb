@@ -9,14 +9,19 @@ describe Hydra::Ezid do
   after(:all) do
     Object.send(:remove_const, :FedoraModel)
   end
+
   subject { FedoraModel.new }
   it { should respond_to(:mint_ezid) }
-  it "mints an ezid" 
-  it "raises an error when minting against an unsaved object" do
-    expect { subject.mint_ezid }.to raise_error(Hydra::Ezid::Error)
+
+  describe "#mint_ezid" do
+    it "mints an ezid"
+    it "raises an error when minting against an unsaved object" do
+      expect { subject.mint_ezid }.to raise_error(Hydra::Ezid::Error)
+    end
+    it "stores an id in a configurable location by schema"
   end
+
   it "uses a configurator for account details"
-  it "stores an id in a configurable location by schema"
   it "disallows repeat settings of a schema"
   it "disallows setting of the ezid manually"
   it "updates/saves when when changed"
