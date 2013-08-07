@@ -1,5 +1,6 @@
 doi:
-  user:
-  pass:
+  user: ""
+  pass: ""
   scheme: doi
-  naa:
+  shoulder: ""
+  naa: ""
