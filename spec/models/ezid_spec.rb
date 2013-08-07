@@ -14,22 +14,22 @@ describe Hydra::Ezid do
   it { should respond_to(:mint_ezid) }
 
   describe "#mint_ezid" do
-    it "mints an ezid"
+    it "mints an ezid" do
+      item.save
+      item.mint_ezid.should be_a(String)
+    end
+    it "uses a configurator for account details" do
+      item.ezid_configurator.doi.user.should eq(CONSTANTINOPLE.ezid.doi.user)
+    end
     it "raises an error when minting against an unsaved object" do
       expect { item.mint_ezid }.to raise_error(Hydra::Ezid::Error)
     end
     it "stores an id in a configurable location by schema"
   end
 
-  it "mints an ezid" do
-    item.save
-    item.mint_ezid.should be_a(String)
-  end
-
-  it "uses a configurator for account details"
   it "disallows repeat settings of a schema"
   it "disallows setting of the ezid manually"
-  it "updates/saves when when changed"
+  it "updates/saves when changed"
   it "crosswalks metadata"
   it "sends crosswalked metadata to the ezid service"
   it "allows specification of DOI or ARK"
