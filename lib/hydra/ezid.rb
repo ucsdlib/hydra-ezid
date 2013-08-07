@@ -4,6 +4,7 @@ module Hydra
     autoload :Version
     autoload :ControllerBehavior
     autoload :ModelMethods
+    autoload :MintError
     class Engine < ::Rails::Engine
       engine_name 'ezid'
     end

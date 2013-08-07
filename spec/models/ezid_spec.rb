@@ -6,11 +6,13 @@ describe Hydra::Ezid do
       include Hydra::Ezid::ModelMethods
     end
   end
+
   after(:all) do
     Object.send(:remove_const, :FedoraModel)
   end
 
   subject(:item) { FedoraModel.new }
+
   it { should respond_to(:mint_ezid) }
 
   describe "#mint_ezid" do
@@ -22,7 +24,7 @@ describe Hydra::Ezid do
       item.ezid_configurator.doi.user.should eq(CONSTANTINOPLE.ezid.doi.user)
     end
     it "raises an error when minting against an unsaved object" do
-      expect { item.mint_ezid }.to raise_error(Hydra::Ezid::Error)
+      expect { item.mint_ezid }.to raise_error(Hydra::Ezid::MintError)
     end
     it "stores an id in a configurable location by schema"
   end

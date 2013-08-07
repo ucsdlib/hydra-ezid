@@ -1,27 +1,29 @@
 module Hydra
-  module EzidControllerBehavior
-    extend ActiveSupport::Concern
+  module Ezid
+    module ControllerBehavior
+      extend ActiveSupport::Concern
 
-    include do
-      # other includes
-    end
+      included do
+        # other includes
+      end
 
-    def new
-    end
+      def new
+      end
 
-    def show
-    end
+      def show
+      end
 
-    def edit
-    end
+      def edit
+      end
 
-    def create
-    end
+      def create
+      end
 
-    def update
-    end
+      def update
+      end
 
-    def destroy
+      def destroy
+      end
     end
   end
 end

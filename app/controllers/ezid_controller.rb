@@ -1,3 +1,3 @@
 class EzidController < ApplicationController
-  include Hydra::EzidControllerBehavior
+  include Hydra::Ezid::ControllerBehavior
 end
