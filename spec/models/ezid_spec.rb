@@ -26,7 +26,10 @@ describe Hydra::Ezid do
     it "raises an error when minting against an unsaved object" do
       expect { item.mint_ezid }.to raise_error(Hydra::Ezid::MintError)
     end
-    it "stores an id in a configurable location by schema"
+
+    it "stores an id in a configurable location by schema" do
+      pending "Need to implement ezid_at first"
+    end
   end
 
   it "disallows repeat settings of a schema"
