@@ -44,9 +44,15 @@ Example:
 class GenericFile < ActiveFedora::Base
   include Hydra::Ezid::ModelMethods
   ezid_config do
-    doi(:descMetadata, in: :my_doi)
-    ark(:properties, in: :some_ark)
-  end
+    store_doi at: :descMetadata, in: :my_doi
+    store_ark at: :properties, in: :some_ark
+    # supplied by system: id
+    # supplied by system: idtype (doi or ark)
+    find_creator at: :descMetadata, in: :author
+    find_title at: :properties
+    find_publisher at: :properties
+    find_publication_year at: :descMetadata, in: :pubYear
+end
 ```
 
 ## Developers

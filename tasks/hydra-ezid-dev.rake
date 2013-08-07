@@ -29,7 +29,9 @@ end
 
 desc "Create the test rails app"
 task :generate do
-  unless File.exists?('spec/internal/Rakefile')
+  if File.exists?('spec/internal/Rakefile')
+    puts "Test app already generated"
+  else
     puts "Generating rails app"
     `rails new spec/internal`
     puts "Updating gemfile"
@@ -51,9 +53,8 @@ gem 'factory_girl_rails'
         puts `rake db:migrate db:test:prepare`
       end
     end
-  puts "Done generating test app"
+    puts "Done generating test app"
   end
-  puts "Test app already generated"
 end
 
 desc "Clean out the test rails app"

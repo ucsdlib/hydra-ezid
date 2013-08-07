@@ -21,7 +21,6 @@ Gem::Specification.new do |s|
   s.add_dependency 'blacklight'
   s.add_dependency 'hydra-head'
   s.add_dependency 'ezid'
-  s.add_dependency 'constantinople'
 
   s.add_development_dependency 'bundler', '~> 1.3'
   s.add_development_dependency 'rake'

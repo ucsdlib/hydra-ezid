@@ -31,6 +31,11 @@ class TestAppGenerator < Rails::Generators::Base
     copy_file "lib/tasks/rspec.rake"
   end
 
+  def copy_ezid_config_files
+    copy_file 'config/ezid.yml'
+    copy_file 'config/ezid_override.yml'
+  end
+
   def delete_generated_noise
     remove_file("public/index.html")
     remove_file("spec/models/user_spec.rb")

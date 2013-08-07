@@ -13,8 +13,12 @@ describe Hydra::Ezid do
       delegate_to :properties, [:some_ark], unique: true
       delegate_to :descMetadata, [:doi], unique: true
       ezid_config do
-        doi(at: :descMetadata)
-        ark(at: :properties, in: :some_ark)
+        store_doi at: :descMetadata
+        store_ark at: :properties, in: :some_ark
+        find_creator at: :descMetadata, in: :author
+        find_title at: :properties
+        find_publisher at: :properties
+        find_publication_year at: :descMetadata, in: :pubYear
       end
     end
   end
@@ -38,7 +42,7 @@ describe Hydra::Ezid do
     end
 
     it "uses a configurator for account details" do
-      Hydra::Ezid.configurator.doi.user.should eq(CONSTANTINOPLE.ezid.doi.user)
+      Hydra::Ezid.config['doi']['user'].should == ''
     end
 
     it "calls Ezid.generate_ezid" do
@@ -51,15 +55,34 @@ describe Hydra::Ezid do
       item.stub(:persisted? => false)
       expect { item.mint_ezid! }.to raise_error(Hydra::Ezid::MintError)
     end
-    it "stores an id in a configurable location by schema" do
-      item.stub(:persisted? => true)
+
+    it "respects the configurator when keys are passed in - doi" do
+      item.mint_ezid!(Hydra::Ezid.config(except_keys: :doi))
+      item.some_ark.should == "ark:/98765/sldr2sufia:xz67gt83a"
+      item.doi.should be_nil
+    end
+
+    it "respects the configurator when keys are passed in - ark" do
+      item.mint_ezid!(Hydra::Ezid.config(except_keys: :ark))
+      item.some_ark.should be_nil
+      item.doi.should == "doi:/10.1000/sldr1sufia:xz67gt83a"
+    end
+
+    it "respects a config from a file" do
+      f = YAML::load(ERB.new(IO.read(File.join(Rails.root, 'config', 'ezid_override.yml'))).result)
+      item.mint_ezid!(Hydra::Ezid.config(from_file: f))
+      item.some_ark.should be_nil
+      item.doi.should == "doi:/10.2000/sldr3sufia:xz67gt83a"
+    end
+
+    it "stores an id in a configurable location by scheme" do
       item.mint_ezid!
       item.some_ark.should == "ark:/98765/sldr2sufia:xz67gt83a"
       item.doi.should == "doi:/10.1000/sldr1sufia:xz67gt83a"
     end
   end
 
-  it "disallows repeat settings of a schema"
+  it "disallows repeat settings of a scheme"
   it "disallows setting of the ezid manually"
   it "updates/saves when changed"
   it "crosswalks metadata"
