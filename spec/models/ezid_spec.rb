@@ -17,7 +17,7 @@ describe Hydra::Ezid do
 
   describe "#mint_ezid" do
     it "mints an ezid" do
-      item.save
+      item.stub(:persisted? => true)
       item.mint_ezid.should be_a(String)
     end
     it "uses a configurator for account details" do
