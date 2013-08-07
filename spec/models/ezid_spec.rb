@@ -27,6 +27,13 @@ describe Hydra::Ezid do
     it "uses a configurator for account details" do
       Hydra::Ezid.configurator.doi.user.should eq(CONSTANTINOPLE.ezid.doi.user)
     end
+
+    it "calls Ezid.generate_ezid" do
+      pending "*** WE NEED TO IMPLEMENT THIS ***"
+      Ezid::ApiSession.any_instance.should_receive(:generate_ezid).once
+      item.mint_ezid
+    end
+
     it "raises an error when minting against an unsaved object" do
       item.stub(:persisted? => false)
       expect { item.mint_ezid }.to raise_error(Hydra::Ezid::MintError)
