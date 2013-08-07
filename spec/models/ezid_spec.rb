@@ -21,6 +21,11 @@ describe Hydra::Ezid do
     it "stores an id in a configurable location by schema"
   end
 
+  it "mints an ezid" do
+    item.save
+    item.mint_ezid.should be_a(String)
+  end
+
   it "uses a configurator for account details"
   it "disallows repeat settings of a schema"
   it "disallows setting of the ezid manually"

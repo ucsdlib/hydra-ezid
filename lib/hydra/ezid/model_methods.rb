@@ -12,6 +12,7 @@ module Hydra
 
       def mint_ezid
         raise Hydra::Ezid::Error.new("Cannot call #mint_ezid on unsaved object") unless self.persisted?
+        @ezid = self.pid
       end
     end
   end
