@@ -16,14 +16,19 @@ describe Hydra::Ezid do
   it { should respond_to(:mint_ezid) }
 
   describe "#mint_ezid" do
-    it "mints an ezid" do
+    before(:each) do
       item.stub(:persisted? => true)
+    end
+
+    it "mints a valid ezid" do
       item.mint_ezid.should be_a(String)
     end
+
     it "uses a configurator for account details" do
       Hydra::Ezid.configurator.doi.user.should eq(CONSTANTINOPLE.ezid.doi.user)
     end
     it "raises an error when minting against an unsaved object" do
+      item.stub(:persisted? => false)
       expect { item.mint_ezid }.to raise_error(Hydra::Ezid::MintError)
     end
 
