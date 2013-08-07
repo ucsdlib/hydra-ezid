@@ -10,13 +10,13 @@ describe Hydra::Ezid do
     Object.send(:remove_const, :FedoraModel)
   end
 
-  subject { FedoraModel.new }
+  subject(:item) { FedoraModel.new }
   it { should respond_to(:mint_ezid) }
 
   describe "#mint_ezid" do
     it "mints an ezid"
     it "raises an error when minting against an unsaved object" do
-      expect { subject.mint_ezid }.to raise_error(Hydra::Ezid::Error)
+      expect { item.mint_ezid }.to raise_error(Hydra::Ezid::Error)
     end
     it "stores an id in a configurable location by schema"
   end
