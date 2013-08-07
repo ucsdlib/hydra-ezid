@@ -17,16 +17,19 @@ describe Hydra::Ezid do
 
   describe "#mint_ezid" do
     it "mints an ezid" do
-      item.save
+      item.stub(:persisted? => true)
       item.mint_ezid.should be_a(String)
     end
     it "uses a configurator for account details" do
-      item.ezid_configurator.doi.user.should eq(CONSTANTINOPLE.ezid.doi.user)
+      Hydra::Ezid.configurator.doi.user.should eq(CONSTANTINOPLE.ezid.doi.user)
     end
     it "raises an error when minting against an unsaved object" do
       expect { item.mint_ezid }.to raise_error(Hydra::Ezid::MintError)
     end
-    it "stores an id in a configurable location by schema"
+
+    it "stores an id in a configurable location by schema" do
+      pending "Need to implement ezid_at first"
+    end
   end
 
   it "disallows repeat settings of a schema"
