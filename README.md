@@ -20,7 +20,7 @@ Or install it yourself as:
 
 ### Make your Models Ezid-able
 
-Add `include Hydra::Ezid::ModelMethods` to the models for anything that you want to be able to mint EZIDs for.
+Add `include Hydra::Ezid::ModelMethods` to the models you want EZIDs for.
 
 Example:
 ```ruby
