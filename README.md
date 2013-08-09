@@ -18,23 +18,6 @@ Or install it yourself as:
 
 ## Usage
 
-### Mount the engine to get the routes in config/routes.rb
-
-    mount Hydra::Ezid::Engine => '/'
-
-### Call button_to_mint_ezid view helper in your search result page template.
-
-First add `helper :ezid` to your `catalog_controller.rb`
-
-Next, we recommend putting the view helper in catalog/[_sort_and_per_page.html.erb](https://github.com/projectblacklight/blacklight/blob/master/app/views/catalog/_sort_and_per_page.html.erb) which you will manually override in your app:
-```erb
-<%= button_to_mint_ezid %>
-```
-
-### Any time you want to refer to the routes from hydra-ezid use ezid.
-
-`ezid.new_ezid_path`
-
 ### Make your Models Ezid-able
 
 Add `include Hydra::Ezid::ModelMethods` to the models for anything that you want to be able to mint EZIDs for.
@@ -46,8 +29,6 @@ class GenericFile < ActiveFedora::Base
   ezid_config do
     store_doi at: :descMetadata, in: :my_doi
     store_ark at: :properties, in: :some_ark
-    # supplied by system: id
-    # supplied by system: idtype (doi or ark)
     find_creator at: :descMetadata, in: :author
     find_title at: :properties
     find_publisher at: :properties
