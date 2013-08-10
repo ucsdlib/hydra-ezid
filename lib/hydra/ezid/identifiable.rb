@@ -62,6 +62,14 @@ module Hydra
         #  @ezid = session.generate_ezid(conf.doi.shoulder + self.pid)
         nil
       end
+
+      def mint_doi
+        mint_ezid(Hydra::Ezid.config(except_keys: :ark))
+      end
+
+      def mint_ark
+        mint_ezid(Hydra::Ezid.config(except_keys: :doi))
+      end
     end
   end
 end

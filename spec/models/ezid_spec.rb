@@ -68,6 +68,18 @@ describe Hydra::Ezid do
       item.doi.should == "doi:/10.1000/sldr1sufia:xz67gt83a"
     end
 
+    it "provides a convenience method for minting only ARKs" do
+      item.mint_ark
+      item.some_ark.should == "ark:/98765/sldr2sufia:xz67gt83a"
+      item.doi.should be_nil
+    end
+
+    it "provides a convenience method for minting only DOIs" do
+      item.mint_doi
+      item.some_ark.should be_nil
+      item.doi.should == "doi:/10.1000/sldr1sufia:xz67gt83a"
+    end
+
     it "respects a config from a file" do
       f = YAML::load(ERB.new(IO.read(File.join(Rails.root, 'config', 'ezid_override.yml'))).result)
       item.mint_ezid(Hydra::Ezid.config(from_file: f))

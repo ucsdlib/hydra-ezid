@@ -59,9 +59,9 @@ And then you can mint EZIDs on your model instances:
 ```ruby
 gf = GenericFile.find('id:123')
 gf.mint_ezid # will mint both a DOI and an ARK per the snippet above
-gf.mint_ezid(except: :doi) # will mint only an ARK
+gf.mint_ezid(Hydra::Ezid.config(except_keys: :doi)) # will mint only an ARK
 gf.mint_doi # shortcut version of prior method
-gf.mint_ezid(except: :ark) # will mint only a DOI
+gf.mint_ezid(Hydra::Ezid.config(except_keys: :ark)) # will mint only a DOI
 gf.mint_ark # shortcut version of prior method
 ```
 
