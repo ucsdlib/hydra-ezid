@@ -5,7 +5,7 @@ module Hydra
     autoload :Engine
     autoload :MintError
     autoload :ControllerBehavior
-    autoload :ModelMethods
+    autoload :Identifiable
 
     def self.config(options = {}.with_indifferent_access)
       from_file = options.fetch(:from_file, default_file)

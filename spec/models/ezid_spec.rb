@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Hydra::Ezid do
   before(:all) do
     class FedoraModel < ActiveFedora::Base
-      include Hydra::Ezid::ModelMethods
+      include Hydra::Ezid::Identifiable
       has_metadata :name => 'properties', :type => ActiveFedora::SimpleDatastream do |m|
         m.field 'some_ark',  :string
       end
@@ -29,16 +29,16 @@ describe Hydra::Ezid do
 
   subject(:item) { FedoraModel.new }
 
-  describe "#mint_ezid!" do
+  describe "#mint_ezid" do
     before(:each) do
       item.stub(:persisted? => true)
       item.stub(:pid => 'sufia:xz67gt83a')
     end
 
-    it { should respond_to(:mint_ezid!) }
+    it { should respond_to(:mint_ezid) }
 
     it "mints a valid ezid" do
-      item.mint_ezid!.should be_nil
+      item.mint_ezid.should be_nil
     end
 
     it "uses a configurator for account details" do
@@ -48,35 +48,35 @@ describe Hydra::Ezid do
     it "calls Ezid.generate_ezid" do
       pending "*** WE NEED TO IMPLEMENT THIS ***"
       Ezid::ApiSession.any_instance.should_receive(:generate_ezid).once
-      item.mint_ezid!
+      item.mint_ezid
     end
 
     it "raises an error when minting against an unsaved object" do
       item.stub(:persisted? => false)
-      expect { item.mint_ezid! }.to raise_error(Hydra::Ezid::MintError)
+      expect { item.mint_ezid }.to raise_error(Hydra::Ezid::MintError)
     end
 
     it "respects the configurator when keys are passed in - doi" do
-      item.mint_ezid!(Hydra::Ezid.config(except_keys: :doi))
+      item.mint_ezid(Hydra::Ezid.config(except_keys: :doi))
       item.some_ark.should == "ark:/98765/sldr2sufia:xz67gt83a"
       item.doi.should be_nil
     end
 
     it "respects the configurator when keys are passed in - ark" do
-      item.mint_ezid!(Hydra::Ezid.config(except_keys: :ark))
+      item.mint_ezid(Hydra::Ezid.config(except_keys: :ark))
       item.some_ark.should be_nil
       item.doi.should == "doi:/10.1000/sldr1sufia:xz67gt83a"
     end
 
     it "respects a config from a file" do
       f = YAML::load(ERB.new(IO.read(File.join(Rails.root, 'config', 'ezid_override.yml'))).result)
-      item.mint_ezid!(Hydra::Ezid.config(from_file: f))
+      item.mint_ezid(Hydra::Ezid.config(from_file: f))
       item.some_ark.should be_nil
       item.doi.should == "doi:/10.2000/sldr3sufia:xz67gt83a"
     end
 
     it "stores an id in a configurable location by scheme" do
-      item.mint_ezid!
+      item.mint_ezid
       item.some_ark.should == "ark:/98765/sldr2sufia:xz67gt83a"
       item.doi.should == "doi:/10.1000/sldr1sufia:xz67gt83a"
     end

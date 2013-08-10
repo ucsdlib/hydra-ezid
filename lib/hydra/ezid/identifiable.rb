@@ -1,6 +1,6 @@
 module Hydra
   module Ezid
-    module ModelMethods
+    module Identifiable
       extend ActiveSupport::Concern
 
       included do
@@ -44,7 +44,7 @@ module Hydra
         "#{ary[0]}:/#{ary[1]}/#{ary[2]}#{ary[3]}"
       end
 
-      def mint_ezid!(conf = Hydra::Ezid.config)
+      def mint_ezid(conf = Hydra::Ezid.config)
         raise Hydra::Ezid::MintError.new("Cannot mint EZID until object is saved") unless self.persisted?
         self.class.ezid_registry.each_pair do |scheme, opts|
           scheme_conf = conf.values.find { |subkeys| subkeys['scheme'] == scheme.to_s }
