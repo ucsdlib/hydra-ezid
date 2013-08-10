@@ -1,10 +1,11 @@
+require 'active_support'
+require 'active-fedora'
+require 'yaml'
 module Hydra
   module Ezid
     extend ActiveSupport::Autoload
     autoload :Version
-    autoload :Engine
     autoload :MintError
-    autoload :ControllerBehavior
     autoload :Identifiable
 
     def self.config(options = {}.with_indifferent_access)
@@ -15,7 +16,7 @@ module Hydra
 
     private
     def self.default_file
-      YAML::load(ERB.new(IO.read(File.join(Rails.root, 'config', 'ezid.yml'))).result)
+      YAML::load(ERB.new(IO.read(File.join('config', 'ezid.yml'))).result)
     end
   end
 end

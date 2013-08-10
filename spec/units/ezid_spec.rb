@@ -81,7 +81,7 @@ describe Hydra::Ezid do
     end
 
     it "respects a config from a file" do
-      f = YAML::load(ERB.new(IO.read(File.join(Rails.root, 'config', 'ezid_override.yml'))).result)
+      f = YAML::load(ERB.new(IO.read(File.join('config', 'ezid_override.yml'))).result)
       item.mint_ezid(Hydra::Ezid.config(from_file: f))
       item.some_ark.should be_nil
       item.doi.should == "doi:/10.2000/sldr3sufia:xz67gt83a"

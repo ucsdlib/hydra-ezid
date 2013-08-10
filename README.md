@@ -1,6 +1,6 @@
 # Hydra::Ezid [![Version](https://badge.fury.io/rb/hydra-ezid.png)](http://badge.fury.io/rb/hydra-ezid) [![Build Status](https://travis-ci.org/psu-stewardship/hydra-ezid.png?branch=master)](https://travis-ci.org/psu-stewardship/hydra-ezid) [![Dependency Status](https://gemnasium.com/psu-stewardship/hydra-ezid.png)](https://gemnasium.com/psu-stewardship/hydra-ezid)
 
-A Rails engine providing EZID services for Hydra applications
+A Ruby gem providing EZID services for Hydra applications
 
 ## Installation
 
