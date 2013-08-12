@@ -1,6 +1,7 @@
 require 'active_support'
 require 'active-fedora'
 require 'yaml'
+require 'ezid'
 module Hydra
   module Ezid
     extend ActiveSupport::Autoload

@@ -1,13 +1,13 @@
 doi:
-  user: "foo"
-  pass: "bar"
+  user: "apitest"
+  pass: "apitest"
   scheme: "doi"
   shoulder: "sldr1"
   naa: "10.1000"
 
 ark:
-  user: "foo"
-  pass: "quux"
+  user: "apitest"
+  pass: "apitest"
   scheme: "ark"
   shoulder: "sldr2"
   naa: "98765"

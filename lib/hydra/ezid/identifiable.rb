@@ -35,13 +35,8 @@ module Hydra
         def self.ezid_register(options, scheme)
           datastream = options[:at]
           field = options.fetch(:in, scheme)
-          ezid_registry[scheme] = {datastream: datastream, field: field}
+          ezid_registry[scheme] = { datastream: datastream, field: field }
         end
-      end
-
-      # TODO: This will be done by ezid gem, THROW AWAY
-      def idify(*ary)
-        "#{ary[0]}:/#{ary[1]}/#{ary[2]}#{ary[3]}"
       end
 
       def mint_ezid(conf = Hydra::Ezid.config)
@@ -49,17 +44,14 @@ module Hydra
         self.class.ezid_registry.each_pair do |scheme, opts|
           scheme_conf = conf.values.find { |subkeys| subkeys['scheme'] == scheme.to_s }
           next unless scheme_conf
-          id = idify(scheme_conf['scheme'], scheme_conf['naa'], scheme_conf['shoulder'], self.pid)
+          session = ::Ezid::ApiSession.new(scheme_conf['user'],
+                                    scheme_conf['pass'],
+                                    scheme_conf['scheme'].to_sym,
+                                    scheme_conf['naa'])
+          record = session.mint
+          id = record.identifier
           datastreams["#{opts[:datastream]}"].send("#{opts[:field]}=", id)
         end
-        # TODO: When generate_ezid is ready, fix me with something like:
-        #   session = ::Ezid::ApiSession.new(
-        #     conf.doi.user,
-        #     conf.doi.pass,
-        #     conf.doi.scheme,
-        #     conf.doi.naa
-        #  )
-        #  @ezid = session.generate_ezid(conf.doi.shoulder + self.pid)
         nil
       end
 
