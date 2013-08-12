@@ -6,17 +6,31 @@ module Hydra
     extend ActiveSupport::Autoload
     autoload :Version
     autoload :MintError
+    autoload :ConfigError
     autoload :Identifiable
 
-    def self.config(options = {}.with_indifferent_access)
-      from_file = options.fetch(:from_file, default_file)
-      except_keys = Array(options[:except_keys])
-      from_file.to_hash.with_indifferent_access.delete_if { |k, v| except_keys.include? k.to_sym }
+    def self.config(cfg_object = nil)
+      case cfg_object
+      when File
+        file_to_hash(cfg_object)
+      when Hash
+        default_file.slice(*cfg_object.keys).deep_merge(cfg_object)
+      when Array, Symbol, String
+        default_file.slice(*cfg_object)
+      else
+        default_file
+      end
+    rescue StandardError => err
+      raise ConfigError.new("Not a valid config object: #{cfg_object} (#{err})")
     end
 
     private
+    def self.file_to_hash(file)
+      YAML::load(file).with_indifferent_access
+    end
+
     def self.default_file
-      YAML::load(ERB.new(IO.read(File.join('config', 'ezid.yml'))).result)
+      file_to_hash(File.open(File.join('config', 'ezid.yml')))
     end
   end
 end

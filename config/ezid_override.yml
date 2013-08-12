@@ -1,6 +1,6 @@
 mysillything:
-  user: ""
-  pass: ""
+  user: "baz"
+  pass: "foobar"
   scheme: "doi"
   shoulder: "sldr3"
   naa: "10.2000"

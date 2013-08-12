@@ -41,12 +41,8 @@ describe Hydra::Ezid do
       item.mint_ezid.should be_nil
     end
 
-    it "uses a configurator for account details" do
-      Hydra::Ezid.config['doi']['user'].should == ''
-    end
-
-    it "calls Ezid.generate_ezid" do
-      pending "*** WE NEED TO IMPLEMENT THIS ***"
+    it 'calls Ezid.generate_ezid' do
+      pending '*** WE NEED TO IMPLEMENT THIS ***'
       Ezid::ApiSession.any_instance.should_receive(:generate_ezid).once
       item.mint_ezid
     end
@@ -54,18 +50,6 @@ describe Hydra::Ezid do
     it "raises an error when minting against an unsaved object" do
       item.stub(:persisted? => false)
       expect { item.mint_ezid }.to raise_error(Hydra::Ezid::MintError)
-    end
-
-    it "respects the configurator when keys are passed in - doi" do
-      item.mint_ezid(Hydra::Ezid.config(except_keys: :doi))
-      item.some_ark.should == "ark:/98765/sldr2sufia:xz67gt83a"
-      item.doi.should be_nil
-    end
-
-    it "respects the configurator when keys are passed in - ark" do
-      item.mint_ezid(Hydra::Ezid.config(except_keys: :ark))
-      item.some_ark.should be_nil
-      item.doi.should == "doi:/10.1000/sldr1sufia:xz67gt83a"
     end
 
     it "provides a convenience method for minting only ARKs" do
@@ -80,17 +64,53 @@ describe Hydra::Ezid do
       item.doi.should == "doi:/10.1000/sldr1sufia:xz67gt83a"
     end
 
-    it "respects a config from a file" do
-      f = YAML::load(ERB.new(IO.read(File.join('config', 'ezid_override.yml'))).result)
-      item.mint_ezid(Hydra::Ezid.config(from_file: f))
-      item.some_ark.should be_nil
-      item.doi.should == "doi:/10.2000/sldr3sufia:xz67gt83a"
-    end
-
     it "stores an id in a configurable location by scheme" do
       item.mint_ezid
       item.some_ark.should == "ark:/98765/sldr2sufia:xz67gt83a"
       item.doi.should == "doi:/10.1000/sldr1sufia:xz67gt83a"
+    end
+
+    describe "configurator" do
+      it "uses the yaml file by default" do
+        Hydra::Ezid.config['doi']['user'].should == 'foo'
+      end
+
+      it "allows a file to be passed in" do
+        f = File.open(File.join('config', 'ezid_override.yml'))
+        item.mint_ezid(Hydra::Ezid.config(f))
+        item.some_ark.should be_nil
+        item.doi.should == "doi:/10.2000/sldr3sufia:xz67gt83a"
+      end
+
+      it "allows a symbol to be passed in" do
+        item.mint_ezid(Hydra::Ezid.config(:ark))
+        item.some_ark.should == "ark:/98765/sldr2sufia:xz67gt83a"
+        item.doi.should be_nil
+      end
+
+      it "allows a string to be passed in" do
+        item.mint_ezid(Hydra::Ezid.config('ark'))
+        item.some_ark.should == "ark:/98765/sldr2sufia:xz67gt83a"
+        item.doi.should be_nil
+      end
+
+      it "allows an array of symbols to be passed in" do
+        item.mint_ezid(Hydra::Ezid.config([:doi]))
+        item.doi.should == "doi:/10.1000/sldr1sufia:xz67gt83a"
+        item.some_ark.should be_nil
+      end
+
+      it "allows an array of strings to be passed in" do
+        item.mint_ezid(Hydra::Ezid.config(['doi']))
+        item.doi.should == "doi:/10.1000/sldr1sufia:xz67gt83a"
+        item.some_ark.should be_nil
+      end
+
+      it "allows a hash to be passed in" do
+        item.mint_ezid(Hydra::Ezid.config({doi: {shoulder: 'sldr4', naa: '20.2000'}}))
+        item.doi.should == "doi:/20.2000/sldr4sufia:xz67gt83a"
+        item.some_ark.should be_nil
+      end
     end
   end
 

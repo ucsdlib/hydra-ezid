@@ -64,11 +64,11 @@ module Hydra
       end
 
       def mint_doi
-        mint_ezid(Hydra::Ezid.config(except_keys: :ark))
+        mint_ezid(Hydra::Ezid.config(:doi))
       end
 
       def mint_ark
-        mint_ezid(Hydra::Ezid.config(except_keys: :doi))
+        mint_ezid(Hydra::Ezid.config(:ark))
       end
     end
   end
