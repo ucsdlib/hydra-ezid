@@ -9,7 +9,8 @@ module Hydra
     autoload :ConfigError
     autoload :Identifiable
 
-    def self.config(cfg_object = nil)
+    def self.config(*cfg_object)
+      cfg_object = cfg_object.length > 1 ? cfg_object : cfg_object.first
       case cfg_object
       when File
         file_to_hash(cfg_object)

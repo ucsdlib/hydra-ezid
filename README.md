@@ -44,6 +44,10 @@ Example:
 ```ruby
 class GenericFile < ActiveFedora::Base
   include Hydra::Ezid::Identifiable
+  has_metadata :name => 'properties', :type => ActiveFedora::SimpleDatastream { |m| m.field 'some_ark',  :string }
+  has_metadata :name => 'descMetadata', :type => ActiveFedora::SimpleDatastream { |m| m.field 'my_doi',  :string }
+  delegate_to :properties, [:some_ark], unique: true
+  delegate_to :descMetadata, [:doi], unique: true
   ezid_config do
     store_doi at: :descMetadata, in: :my_doi
     store_ark at: :properties, in: :some_ark
@@ -58,11 +62,23 @@ And then you can mint EZIDs on your model instances:
 
 ```ruby
 gf = GenericFile.find('id:123')
-gf.mint_ezid # will mint both a DOI and an ARK per the snippet above
-gf.mint_ezid(Hydra::Ezid.config(except_keys: :doi)) # will mint only an ARK
-gf.mint_doi # shortcut version of prior method
-gf.mint_ezid(Hydra::Ezid.config(except_keys: :ark)) # will mint only a DOI
-gf.mint_ark # shortcut version of prior method
+gf.mint_ezid # will mint both a DOI and an ARK as configured in the default YAML file
+gf.mint_ark # mint only an ARK (as configured in default YAML)
+gf.mint_doi # mint only a DOI (as configured in default YAML)
+# Override default configuration
+## Pass in a symbol or string corresponding to a key in your YAML
+gf.mint_ezid(Hydra::Ezid.config(:ark)) # will mint only an ARK
+gf.mint_ezid(Hydra::Ezid.config('ark')) # will mint only an ARK
+gf.mint_ezid(Hydra::Ezid.config(:doi)) # will mint only a DOI
+gf.mint_ezid(Hydra::Ezid.config('doi')) # will mint only a DOI
+## Pass in an array (or multiple args)
+gf.mint_ezid(Hydra::Ezid.config([:ark, 'doi'])) # will mint an ARK and a DOI (useful if your YAML has > 2 entries)
+gf.mint_ezid(Hydra::Ezid.config(:ark, 'doi')) # or eliminate the brackets
+## Pass in a hash
+gf.mint_ezid(Hydra::Ezid.config({doi: {shoulder: 'sldr4', naa: '20.2000'}})) # will use default YAML config, minting only a DOI with overridden shoulder and NAA values
+## Pass in a file object for an alternative YAML config
+gf.mint_ezid(Hydra::Ezid.config(File.open('config/whatever.yml'))
+gf.save # make sure to persist changes to your object
 ```
 
 ## Developers

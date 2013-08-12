@@ -70,7 +70,7 @@ describe Hydra::Ezid do
       item.doi.should == "doi:/10.1000/sldr1sufia:xz67gt83a"
     end
 
-    describe "configurator" do
+    describe "the configurator" do
       it "uses the yaml file by default" do
         Hydra::Ezid.config['doi']['user'].should == 'foo'
       end
@@ -104,6 +104,12 @@ describe Hydra::Ezid do
         item.mint_ezid(Hydra::Ezid.config(['doi']))
         item.doi.should == "doi:/10.1000/sldr1sufia:xz67gt83a"
         item.some_ark.should be_nil
+      end
+
+      it "treats multiple args as an array" do
+        item.mint_ezid(Hydra::Ezid.config('doi', :ark))
+        item.doi.should == "doi:/10.1000/sldr1sufia:xz67gt83a"
+        item.some_ark.should == "ark:/98765/sldr2sufia:xz67gt83a"
       end
 
       it "allows a hash to be passed in" do
