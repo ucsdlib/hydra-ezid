@@ -6,8 +6,7 @@ module Hydra
   module Ezid
     extend ActiveSupport::Autoload
     autoload :Version
-    autoload :MintError
-    autoload :ConfigError
+    autoload :Exceptions
     autoload :Identifiable
 
     def self.config(*cfg_object)
