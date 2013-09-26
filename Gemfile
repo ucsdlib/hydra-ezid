@@ -1,6 +1,10 @@
 source 'https://rubygems.org'
 
-gem 'debugger'
+group :test do
+  gem 'guard-rspec'
+  gem 'debugger'
+  gem 'ruby_gntp'
+end
 
 # Specify your gem's dependencies in hydra-ezid.gemspec
 gemspec
