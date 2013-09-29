@@ -2,11 +2,11 @@ require 'active_support'
 require 'active-fedora'
 require 'yaml'
 require 'ezid'
+require 'hydra/ezid/exceptions'
 module Hydra
   module Ezid
     extend ActiveSupport::Autoload
     autoload :Version
-    autoload :Exceptions
     autoload :Identifiable
 
     class << self
